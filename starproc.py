@@ -206,7 +206,7 @@ for SAMPLE in sample_files:
         genomeDir = "./dvh-starIndex/" + org + "/"
         outDir_temp = temp_dir + SAMPLE + "/" + org + "/"
 
-        cmd = ("STAR --genomeDir " + genomeDir + " --runThreadN 7 --outSAMstrandField intronMotif "
+        cmd = ("STAR --genomeDir " + genomeDir + " --runThreadN 6 --outSAMstrandField intronMotif "
            "--readFilesIn " +FASTQ1+ " " +FASTQ2+ " --readFilesCommand zcat "
                "--outFileNamePrefix " + outDir_temp)
         ##--outFilterMismatchNoverLmax 0.01 --outFilterMultimapNmax 100 --outFilterMultimapScoreRange 2 --outSAMstrandField None --outSAMmode Full --outSAMattributes Standard --outSAMunmapped None --outFilterType BySJout --outStd SAM
