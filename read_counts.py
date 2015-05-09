@@ -196,6 +196,8 @@ from mpltools import style
 from mpltools import layout
 style.use('ggplot')
 
+#x = all_counts['Desulfovibrio_vulgaris_Hildenborough_uid57645'].copy()
+
 x = all_freqs['Desulfovibrio_vulgaris_Hildenborough_uid57645'].copy()
 x[ x == 0 ] = np.NAN
 x = np.log10( x )
@@ -203,8 +205,12 @@ x = (x.transpose() - x.mean(1)).transpose()
 x = (x.transpose() / x.std(1)).transpose()
 ## another option: sklearn.preprocessing.scale(x.values, axis=0, with_mean=True, with_std=True, copy=True)
 op = x.ix[ ['DVU0002','DVU0003','DVU0004','DVU0005','DVU0018'] ] 
-op = x.ix[ ['DVU0060','DVU0061'] ] 
+#op = x.ix[ ['DVU0060','DVU0061'] ] 
 op.transpose().plot(kind='line')
+
+## samples where values are dropping way low:
+samps = op.columns.droplevel(1).values[np.where((op < 1.5).sum()>0)]
+sample_infos['Desulfovibrio_vulgaris_Hildenborough_uid57645'].ix[ samps ] ## all starvation...
 
 from sklearn.cluster import KMeans
 inertias = np.zeros(400)
@@ -216,9 +222,6 @@ for n_clust in range(50,400):
     #op.transpose().plot(kind='line')
     inertias[n_clust] = km.inertia_
     print n_clust, km.inertia_
-
-## samples where values are dropping way low:
-samps = op.columns.droplevel(1).values[np.where((op < 1.5).sum()>0)]
-sample_infos['Desulfovibrio_vulgaris_Hildenborough_uid57645'].ix[ samps ] ## all starvation...
+pd.Series(inertias).plot()
 
 
